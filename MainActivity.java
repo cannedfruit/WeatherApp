@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -119,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        //of a user can search a city using the button
+        //or a user can search a city using the button
         searchButton = (Button) findViewById(R.id.searchButton);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         textAirPressure = (TextView)findViewById(R.id.textAirPressure);
         textHumidity = (TextView)findViewById(R.id.textHumidity);
 
-        //load 5 day forecast
+        //load 4 day forecast
         titleDay1 = (TextView) findViewById(R.id.titleDay1);
         titleDay2 = (TextView) findViewById(R.id.titleDay2);
         titleDay3 = (TextView) findViewById(R.id.titleDay3);
@@ -164,6 +165,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -185,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
         // Access the device's key-value storage
         mSharedPreferences = getSharedPreferences(PREFS, MODE_PRIVATE);
 
-        // Read the user's name,
+        // Read the stored city,
         // or an empty string if nothing found
         final String name = mSharedPreferences.getString(PREF_CITY, "");
 
@@ -223,9 +230,9 @@ public class MainActivity extends AppCompatActivity {
                     e.apply();
 
                     // call queryCity to call API
-                    textCity.setText(name);
+                    textCity.setText(inputName);
                     try {
-                        queryCity(name);
+                        queryCity(inputName);
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }

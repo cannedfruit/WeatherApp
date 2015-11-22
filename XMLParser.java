@@ -129,9 +129,6 @@ public class XMLParser{
                     break;
                 case "pressure":
                     pressure = parser.getAttributeValue(null, "value");
-                    int length = pressure.length();
-                    pressure = pressure.substring(0, (length - 3));
-                    pressure += "hPa";
                     break;
                 case "humidity":
                     humidity = parser.getAttributeValue(null, "value");
