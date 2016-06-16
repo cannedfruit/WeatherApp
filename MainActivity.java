@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -15,8 +16,10 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -271,8 +274,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-            new DownloadXmlTask().execute(QUERY_URL + urlString + "&mode=xml&APPID=22465548e543ec41997bdb6fe3d89ced");
-            new DownloadForecastXML().execute(FORECAST_URL + urlString + "&mode=xml&cnt=5&APPID=22465548e543ec41997bdb6fe3d89ced");
+            new DownloadXmlTask().execute(QUERY_URL + urlString + getString(R.string.QueryAPI));
+            new DownloadForecastXML().execute(FORECAST_URL + urlString + getString(R.string.forecastAPI));
         } else {
             textCity.setText(R.string.NoNetwork);
         }
@@ -349,38 +352,38 @@ public class MainActivity extends AppCompatActivity {
         switch (icon) {
             case "01d":
             case "01n":
-                layout.setBackgroundResource(R.mipmap.sun_new);
+                layout.setBackgroundResource(R.drawable.sun_new);
                 break;
             case "02d":
             case "02n":
-                layout.setBackgroundResource(R.mipmap.few_clouds_new);
+                layout.setBackgroundResource(R.drawable.few_clouds_new);
                 break;
             case "03d":
             case "03n":
-                layout.setBackgroundResource(R.mipmap.clouds_new);
+                layout.setBackgroundResource(R.drawable.clouds_new);
                 break;
             case "04d":
             case "04n":
-                layout.setBackgroundResource(R.mipmap.broken_clouds_new);
+                layout.setBackgroundResource(R.drawable.broken_clouds_new);
                 break;
             case "09d":
             case "09n":
-                layout.setBackgroundResource(R.mipmap.show_rain_new);
+                layout.setBackgroundResource(R.drawable.show_rain_new);
                 break;
             case "10d":
             case "10n":
-                layout.setBackgroundResource(R.mipmap.rain_new);
+                layout.setBackgroundResource(R.drawable.rain_new);
                 break;
             case "11d":
             case "11n":
-                layout.setBackgroundResource(R.mipmap.thunder_new);
+                layout.setBackgroundResource(R.drawable.thunder_new);
                 break;
             case "13d":
             case "13n":
-                layout.setBackgroundResource(R.mipmap.snow_new);
+                layout.setBackgroundResource(R.drawable.snow_new);
                 break;
             default:
-                layout.setBackgroundResource(R.mipmap.mist_new);
+                layout.setBackgroundResource(R.drawable.mist_new);
                 break;
         }
     }
@@ -513,5 +516,22 @@ public class MainActivity extends AppCompatActivity {
         //starts the parse
         return weatherParse.parse(is);
 
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if ( v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent( event );
     }
 }

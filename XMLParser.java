@@ -32,7 +32,7 @@ public class XMLParser{
         }
     }
 
-    protected static class Time {
+    protected class Time {
         protected String date;
         protected String temperature;
         protected String humidity;
@@ -54,7 +54,7 @@ public class XMLParser{
             this.icon = icon;
         }
     }
-    protected static class Day {
+    protected class Day {
         protected final Time day1;
         protected final Time day2;
         protected final Time day3;
@@ -71,8 +71,6 @@ public class XMLParser{
     // Parses the contents of the current weather from Open Weather Map API.
     private Day readDay(XmlPullParser parser) throws XmlPullParserException, IOException {
         //OpenWeather map returns same day
-        //dayNull burns that first day returned
-        Time dayNull = new Time();
         Time day1 = new Time();
         Time day2 = new Time();
         Time day3 = new Time();
@@ -88,7 +86,7 @@ public class XMLParser{
             name = parser.getName();
 
             if (name.equals("forecast")) {
-                dayNull = readTime(parser);
+                readTime(parser);
                 day1 = readTime(parser);
                 day2 = readTime(parser);
                 day3 = readTime(parser);

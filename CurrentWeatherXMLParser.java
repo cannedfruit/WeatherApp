@@ -14,9 +14,7 @@ import java.io.InputStream;
 
 //instantiate the parser
 public class CurrentWeatherXMLParser {
-    // We don't use namespaces
     private static final String ns = null;
-
 
     protected Current parse(InputStream in) throws XmlPullParserException, IOException {
         try {
